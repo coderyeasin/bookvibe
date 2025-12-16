@@ -19,8 +19,9 @@ const SingleBook = ({ allBooksData }) => {
         </div>
         <div className="space-y-3">
           <div className="flex gap-5">
-            <p className={commonCls}>{tags[0]}</p>
-            <p className={commonCls}>{tags[1]}</p>
+            {tags?.map((tag) => (
+              <p className={commonCls}>{tag}</p>
+            ))}
           </div>
           <div className="border-b border-dashed border-gray-300 mb-4">
             <h3 className="text-[24px] font-bold truncate">{bookName}</h3>

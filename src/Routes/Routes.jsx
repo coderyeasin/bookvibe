@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 import Root from "../pages/Root/Root";
 import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import About from "../pages/About/About";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
         loader: () => fetch("booksData.json"),
         path: "/",
         Component: Home,
+      },
+      {
+        path: "/about",
+        Component: About,
       },
     ],
   },

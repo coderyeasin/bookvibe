@@ -1,17 +1,20 @@
 import React from "react";
+import { Link } from "react-router";
 
 const NavbarDesign = () => {
+  const commonCls = "px-4 py-2 cursor-pointer text-[#131313] text-lg";
   const links = (
     <>
-      <li className="px-4 py-2 cursor-pointer border-2 border-[#23BE0A] text-[#23BE0A] font-semibold text-lg rounded-md">
-        Home
-      </li>
-      <li className="px-4 py-2 cursor-pointer text-[#131313] text-lg">
-        Listed Books
-      </li>
-      <li className="px-4 py-2 cursor-pointer text-[#131313] text-lg">
-        Pages to Read
-      </li>
+      <Link to="/">
+        <li className="px-4 py-2 cursor-pointer border-2 border-[#23BE0A] text-[#23BE0A] font-semibold text-lg rounded-md">
+          Home
+        </li>
+      </Link>
+      <Link to="/about">
+        <li className={commonCls}>About</li>
+      </Link>
+      <li className={commonCls}>Listed Books</li>
+      <li className={commonCls}>Pages to Read</li>
     </>
   );
   return (
