@@ -67,10 +67,10 @@ const BookDetails = () => {
           </div>
           <div className="flex-1 flex justify-end items-center gap-4 min-w-0">
             <a className="bg-[#23BE0A] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline">
-              Read
+              Mark as Read
             </a>
             <a className="bg-[#59C6D2] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline">
-              WishList
+              Add To WishList
             </a>
           </div>
         </div>
