@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData, useParams } from "react-router";
 import { FaRegStar } from "react-icons/fa";
+import { AddToLocalStorage } from "../../utils/addToDB";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -21,7 +22,14 @@ const BookDetails = () => {
   } = singleBook;
   const commonCls =
     "text-md rounded-[30px] px-3 py-1 font-semibold bg-[#1313130D] text-[#23BE0A]";
+  const handleMarkAsRead = (id) => {
+    // Functionality to mark the book as read
+    AddToLocalStorage(id);
+  };
 
+  const handleAddToWishList = () => {
+    // Functionality to add the book to the wishlist
+  };
   return (
     <div className="my-7">
       <h3 className="text-[2.5rem] font-bold text-center">BookDetails</h3>
@@ -66,12 +74,18 @@ const BookDetails = () => {
             </div>
           </div>
           <div className="flex-1 flex justify-end items-center gap-4 min-w-0">
-            <a className="bg-[#23BE0A] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline">
+            <button
+              onClick={() => handleMarkAsRead(id)}
+              className="bg-[#23BE0A] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline"
+            >
               Mark as Read
-            </a>
-            <a className="bg-[#59C6D2] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline">
+            </button>
+            <button
+              onClick={handleAddToWishList}
+              className="bg-[#59C6D2] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline"
+            >
               Add To WishList
-            </a>
+            </button>
           </div>
         </div>
       </div>
