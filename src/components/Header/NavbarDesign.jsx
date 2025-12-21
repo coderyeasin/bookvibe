@@ -13,7 +13,9 @@ const NavbarDesign = () => {
       <Link to="/about">
         <li className={commonCls}>About</li>
       </Link>
-      <li className={commonCls}>Listed Books</li>
+      <Link to="/readList">
+        <li className={commonCls}>Listed Books</li>
+      </Link>
       <li className={commonCls}>Pages to Read</li>
     </>
   );
