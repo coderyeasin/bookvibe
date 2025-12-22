@@ -3,9 +3,12 @@ import { useLoaderData } from "react-router";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { getItem } from "../../utils/addReadListToDB";
-import SingleBook from "../SingleBook/SingleBook";
 import WishList from "../WishList/WishList";
-import { getWishList } from "../../utils/addWishListToDB";
+import {
+  getWishList,
+  removeWishListFromLocalStorage,
+} from "../../utils/addWishListToDB";
+import ReadBooks from "../ReadBooks/ReadBooks";
 
 const ReadLists = () => {
   const [readBooks, setReadBooks] = useState([]);
@@ -47,6 +50,13 @@ const ReadLists = () => {
     }
   };
 
+  const handleDelete = (bookId) => {
+    removeWishListFromLocalStorage(bookId);
+    const updatedReadBooks = readBooks.filter((book) => book.bookId !== bookId);
+    setReadBooks(updatedReadBooks);
+    setWishList(updatedReadBooks);
+  };
+
   return (
     <div>
       <details className="dropdown grid place-items-center my-4">
@@ -73,14 +83,24 @@ const ReadLists = () => {
             Finished Book : {readBooks.length}
           </h2>
           {readBooks.map((book) => (
-            <SingleBook key={book.bookId} allBooksData={book}></SingleBook>
+            <ReadBooks
+              key={book.bookId}
+              allBooksData={book}
+              handleDelete={handleDelete}
+            ></ReadBooks>
           ))}
         </TabPanel>
         <TabPanel>
           <h2 className="text-xl font-bold text-center">
             Finished Book : {wishList.length}
           </h2>
-          <WishList wishList={wishList} />
+          {wishList.map((book) => (
+            <WishList
+              key={book.bookId}
+              allBooksData={book}
+              handleDelete={handleDelete}
+            ></WishList>
+          ))}
         </TabPanel>
       </Tabs>
     </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { FaRegStar, FaTrashAlt } from "react-icons/fa";
-const WishList = ({ allBooksData, handleDelete }) => {
+const ReadBooks = ({ allBooksData }) => {
   const { image, tags, category, author, bookId, rating, bookName } =
     allBooksData;
   const commonCls =
@@ -30,10 +30,7 @@ const WishList = ({ allBooksData, handleDelete }) => {
           </div>
           <div className="flex justify-between items-center">
             <p className="text-lg">{category}</p>
-            <div
-              onClick={() => handleDelete(bookId)}
-              className="gap-2 text-lg cursor-pointer"
-            >
+            <div className="gap-2 text-lg cursor-pointer">
               <FaTrashAlt />
             </div>
             <div className="flex items-center gap-2 text-lg">
@@ -46,4 +43,4 @@ const WishList = ({ allBooksData, handleDelete }) => {
   );
 };
 
-export default WishList;
+export default ReadBooks;

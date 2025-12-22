@@ -27,7 +27,9 @@ const AddWishListToLocalStorage = (id) => {
 const removeWishListFromLocalStorage = (id) => {
   try {
     const storedItems = getWishList();
-    const updatedItems = storedItems.filter((itemId) => itemId !== id);
+    const updatedItems = storedItems.filter(
+      (itemId) => String(itemId) !== String(id)
+    );
     localStorage.setItem("wishList", JSON.stringify(updatedItems));
     alert("Item removed from the list");
   } catch (error) {
