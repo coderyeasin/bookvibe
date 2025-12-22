@@ -1,5 +1,5 @@
 import React from "react";
-import { FaRegStar } from "react-icons/fa";
+import { FaRegStar, FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router";
 const SingleBook = ({ allBooksData }) => {
   const { image, tags, category, author, bookId, rating, bookName } =

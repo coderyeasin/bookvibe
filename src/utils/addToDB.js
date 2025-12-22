@@ -23,4 +23,15 @@ const AddToLocalStorage = (id) => {
     console.error(`Error setting item ${id} in localStorage`, error);
   }
 };
-export { getItem, AddToLocalStorage };
+
+const removeFromLocalStorage = (id) => {
+  try {
+    const storedItems = getItem();
+    const updatedItems = storedItems.filter((itemId) => itemId !== id);
+    localStorage.setItem("readList", JSON.stringify(updatedItems));
+    alert("Item removed from the list");
+  } catch (error) {
+    console.error(`Error removing item ${id} from localStorage`, error);
+  }
+};
+export { getItem, AddToLocalStorage, removeFromLocalStorage };
