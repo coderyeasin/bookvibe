@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import { getItem } from "../../utils/addToDB";
+import { getItem } from "../../utils/addReadListToDB";
 import SingleBook from "../SingleBook/SingleBook";
+import WishList from "../WishList/WishList";
+import { getWishList } from "../../utils/addWishListToDB";
 
 const ReadLists = () => {
   const [readBooks, setReadBooks] = useState([]);
+  const [wishList, setWishList] = useState([]);
   const [sort, setSort] = useState("");
   const data = useLoaderData();
 
@@ -18,6 +21,14 @@ const ReadLists = () => {
     );
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setReadBooks(myReadList);
+
+    //wishList
+    const getWishListFromDB = getWishList();
+    const convertedWishList = getWishListFromDB.map((id) => parseInt(id));
+    const myWishList = data.filter((book) =>
+      convertedWishList.includes(book.bookId)
+    );
+    setWishList(myWishList);
   }, []);
 
   const handleBySort = (type) => {
@@ -66,7 +77,10 @@ const ReadLists = () => {
           ))}
         </TabPanel>
         <TabPanel>
-          <h2>My wish list</h2>
+          <h2 className="text-xl font-bold text-center">
+            Finished Book : {wishList.length}
+          </h2>
+          <WishList wishList={wishList} />
         </TabPanel>
       </Tabs>
     </div>

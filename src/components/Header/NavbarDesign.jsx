@@ -13,7 +13,7 @@ const NavbarDesign = () => {
       <Link to="/about">
         <li className={commonCls}>About</li>
       </Link>
-      <Link to="/readList">
+      <Link to="/listedBooks">
         <li className={commonCls}>Listed Books</li>
       </Link>
       <li className={commonCls}>Pages to Read</li>

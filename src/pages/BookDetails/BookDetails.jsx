@@ -28,7 +28,7 @@ const BookDetails = () => {
     AddToLocalStorage(id);
   };
 
-  const handleAddToWishList = () => {
+  const handleAddToWishList = (id) => {
     // Functionality to add the book to the wishlist
     AddWishListToLocalStorage(id);
   };
