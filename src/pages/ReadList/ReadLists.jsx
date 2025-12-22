@@ -7,6 +7,7 @@ import SingleBook from "../SingleBook/SingleBook";
 
 const ReadLists = () => {
   const [readBooks, setReadBooks] = useState([]);
+  const [sort, setSort] = useState("");
   const data = useLoaderData();
 
   useEffect(() => {
@@ -18,25 +19,57 @@ const ReadLists = () => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setReadBooks(myReadList);
   }, []);
-  return (
-    <Tabs>
-      <TabList>
-        <Tab>Read Book List</Tab>
-        <Tab>My Wish List</Tab>
-      </TabList>
 
-      <TabPanel>
-        <h2 className="text-xl font-bold text-center">
-          Finished Book : {readBooks.length}
-        </h2>
-        {readBooks.map((book) => (
-          <SingleBook key={book.bookId} allBooksData={book}></SingleBook>
-        ))}
-      </TabPanel>
-      <TabPanel>
-        <h2>My wish list</h2>
-      </TabPanel>
-    </Tabs>
+  const handleBySort = (type) => {
+    setSort(type);
+    if (type === "Pages") {
+      const sortedByPages = [...readBooks].sort(
+        (a, b) => a.totalPages - b.totalPages
+      );
+      setReadBooks(sortedByPages);
+    }
+    if (type === "Rating") {
+      const sortedByRatings = [...readBooks].sort(
+        (a, b) => b.rating - a.rating
+      );
+      setReadBooks(sortedByRatings);
+    }
+  };
+
+  return (
+    <div>
+      <details className="dropdown grid place-items-center my-4">
+        <summary className="btn m-1 bg-[#23BE0A] border-none">
+          Sort by : {sort ? sort : ""}
+        </summary>
+        <ul className="menu dropdown-content bg-gray-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          <li>
+            <a onClick={() => handleBySort("Pages")}>Pages</a>
+          </li>
+          <li>
+            <a onClick={() => handleBySort("Rating")}>Ratings</a>
+          </li>
+        </ul>
+      </details>
+      <Tabs>
+        <TabList>
+          <Tab>Read Book List</Tab>
+          <Tab>My Wish List</Tab>
+        </TabList>
+
+        <TabPanel>
+          <h2 className="text-xl font-bold text-center">
+            Finished Book : {readBooks.length}
+          </h2>
+          {readBooks.map((book) => (
+            <SingleBook key={book.bookId} allBooksData={book}></SingleBook>
+          ))}
+        </TabPanel>
+        <TabPanel>
+          <h2>My wish list</h2>
+        </TabPanel>
+      </Tabs>
+    </div>
   );
 };
 
