@@ -1,7 +1,8 @@
 import React from "react";
 import { useLoaderData, useParams } from "react-router";
 import { FaRegStar } from "react-icons/fa";
-import { AddToLocalStorage } from "../../utils/addToDB";
+import { AddToLocalStorage } from "../../utils/addReadListToDB";
+import { AddWishListToLocalStorage } from "../../utils/addWishListToDB";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const BookDetails = () => {
 
   const handleAddToWishList = () => {
     // Functionality to add the book to the wishlist
+    AddWishListToLocalStorage(id);
   };
   return (
     <div className="my-7">
@@ -81,7 +83,7 @@ const BookDetails = () => {
               Mark as Read
             </button>
             <button
-              onClick={handleAddToWishList}
+              onClick={() => handleAddToWishList(id)}
               className="bg-[#59C6D2] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline"
             >
               Add To WishList
