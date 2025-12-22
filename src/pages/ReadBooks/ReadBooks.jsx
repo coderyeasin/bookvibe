@@ -1,8 +1,16 @@
 import React from "react";
 import { FaRegStar, FaTrashAlt } from "react-icons/fa";
-const ReadBooks = ({ allBooksData }) => {
-  const { image, tags, category, author, bookId, rating, bookName } =
-    allBooksData;
+const ReadBooks = ({ allBooksData, handleDelete }) => {
+  const {
+    image,
+    tags,
+    category,
+    author,
+    bookId,
+    rating,
+    bookName,
+    totalPages,
+  } = allBooksData;
   const commonCls =
     "text-md rounded-[30px] px-3 py-1 font-semibold bg-[#1313130D] text-[#23BE0A]";
 
@@ -27,10 +35,16 @@ const ReadBooks = ({ allBooksData }) => {
           <div className="border-b border-dashed border-gray-300 mb-4">
             <h3 className="text-[24px] font-bold truncate">{bookName}</h3>
             <p className="text-[1rem] text-gray-700 pb-3">By: {author}</p>
+            <p className="text-sm text-slate-700">
+              <strong> Pages :</strong> {totalPages}
+            </p>
           </div>
           <div className="flex justify-between items-center">
             <p className="text-lg">{category}</p>
-            <div className="gap-2 text-lg cursor-pointer">
+            <div
+              onClick={() => handleDelete(bookId)}
+              className="gap-2 text-lg cursor-pointer"
+            >
               <FaTrashAlt />
             </div>
             <div className="flex items-center gap-2 text-lg">

@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData, useParams } from "react-router";
+import { useLoaderData, useNavigate, useParams } from "react-router";
 import { FaRegStar } from "react-icons/fa";
 import { AddToLocalStorage } from "../../utils/addReadListToDB";
 import { AddWishListToLocalStorage } from "../../utils/addWishListToDB";
@@ -8,6 +8,8 @@ const BookDetails = () => {
   const { id } = useParams();
   const bookId = parseInt(id);
   const data = useLoaderData();
+  const navigate = useNavigate();
+
   const singleBook = data.find((book) => book.bookId === bookId);
   const {
     image,
@@ -26,11 +28,13 @@ const BookDetails = () => {
   const handleMarkAsRead = (id) => {
     // Functionality to mark the book as read
     AddToLocalStorage(id);
+    navigate("/readlists");
   };
 
   const handleAddToWishList = (id) => {
     // Functionality to add the book to the wishlist
     AddWishListToLocalStorage(id);
+    navigate("/readlists");
   };
   return (
     <div className="my-7">

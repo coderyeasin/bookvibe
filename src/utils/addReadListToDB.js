@@ -27,7 +27,9 @@ const AddToLocalStorage = (id) => {
 const removeFromLocalStorage = (id) => {
   try {
     const storedItems = getItem();
-    const updatedItems = storedItems.filter((itemId) => itemId !== id);
+    const updatedItems = storedItems.filter(
+      (itemId) => String(itemId) !== String(id)
+    );
     localStorage.setItem("readList", JSON.stringify(updatedItems));
     alert("Item removed from the list");
   } catch (error) {

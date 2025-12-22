@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import { getItem } from "../../utils/addReadListToDB";
-import WishList from "../WishList/WishList";
+import { getItem, removeFromLocalStorage } from "../../utils/addReadListToDB";
 import {
   getWishList,
   removeWishListFromLocalStorage,
 } from "../../utils/addWishListToDB";
+import WishList from "../WishList/WishList";
 import ReadBooks from "../ReadBooks/ReadBooks";
 
 const ReadLists = () => {
@@ -17,91 +17,83 @@ const ReadLists = () => {
   const data = useLoaderData();
 
   useEffect(() => {
-    const getReadListFromDB = getItem();
-    const convertedReadList = getReadListFromDB.map((id) => parseInt(id));
-    const myReadList = data.filter((book) =>
-      convertedReadList.includes(book.bookId)
-    );
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setReadBooks(myReadList);
+    // Helper function to filter data based on IDs from a storage getter
+    const getBooksFromDB = (getIdsFunc) => {
+      const storedIds = getIdsFunc().map((id) => parseInt(id));
+      return data.filter((book) => storedIds.includes(book.bookId));
+    };
 
-    //wishList
-    const getWishListFromDB = getWishList();
-    const convertedWishList = getWishListFromDB.map((id) => parseInt(id));
-    const myWishList = data.filter((book) =>
-      convertedWishList.includes(book.bookId)
-    );
-    setWishList(myWishList);
-  }, []);
+    setReadBooks(getBooksFromDB(getItem));
+    setWishList(getBooksFromDB(getWishList));
+  }, [data]); // data as dependency ensures it runs when loader completes
 
   const handleBySort = (type) => {
     setSort(type);
-    if (type === "Pages") {
-      const sortedByPages = [...readBooks].sort(
-        (a, b) => a.totalPages - b.totalPages
+    const sortLogic = (list) => {
+      return [...list].sort((a, b) =>
+        type === "Pages" ? b.totalPages - a.totalPages : b.rating - a.rating
       );
-      setReadBooks(sortedByPages);
-    }
-    if (type === "Rating") {
-      const sortedByRatings = [...readBooks].sort(
-        (a, b) => b.rating - a.rating
-      );
-      setReadBooks(sortedByRatings);
-    }
+    };
+
+    setReadBooks(sortLogic(readBooks));
+    setWishList(sortLogic(wishList));
   };
 
   const handleDelete = (bookId) => {
+    // 1. Database removal
+    removeFromLocalStorage(bookId);
     removeWishListFromLocalStorage(bookId);
-    const updatedReadBooks = readBooks.filter((book) => book.bookId !== bookId);
-    setReadBooks(updatedReadBooks);
-    setWishList(updatedReadBooks);
+
+    // 2. UI State removal
+    setReadBooks((prev) => prev.filter((book) => book.bookId !== bookId));
+    setWishList((prev) => prev.filter((book) => book.bookId !== bookId));
   };
 
   return (
-    <div>
-      <details className="dropdown grid place-items-center my-4">
-        <summary className="btn m-1 bg-[#23BE0A] border-none">
-          Sort by : {sort ? sort : ""}
-        </summary>
-        <ul className="menu dropdown-content bg-gray-100 rounded-box z-1 w-52 p-2 shadow-sm">
-          <li>
-            <a onClick={() => handleBySort("Pages")}>Pages</a>
-          </li>
-          <li>
-            <a onClick={() => handleBySort("Rating")}>Ratings</a>
-          </li>
-        </ul>
-      </details>
+    <div className="max-w-7xl mx-auto px-4">
+      {/* Sort Dropdown */}
+      <div className="grid place-items-center my-4">
+        <details className="dropdown">
+          <summary className="btn bg-[#23BE0A] text-white border-none hover:bg-[#1e9d08]">
+            Sort by : {sort || "Select"}
+          </summary>
+          <ul className="menu dropdown-content bg-white rounded-box z-[1] w-52 p-2 shadow">
+            <li>
+              <a onClick={() => handleBySort("Pages")}>Pages</a>
+            </li>
+            <li>
+              <a onClick={() => handleBySort("Rating")}>Ratings</a>
+            </li>
+          </ul>
+        </details>
+      </div>
+
       <Tabs>
         <TabList>
           <Tab>Read Book List</Tab>
           <Tab>My Wish List</Tab>
         </TabList>
 
-        <TabPanel>
-          <h2 className="text-xl font-bold text-center">
-            Finished Book : {readBooks.length}
-          </h2>
-          {readBooks.map((book) => (
-            <ReadBooks
-              key={book.bookId}
-              allBooksData={book}
-              handleDelete={handleDelete}
-            ></ReadBooks>
-          ))}
-        </TabPanel>
-        <TabPanel>
-          <h2 className="text-xl font-bold text-center">
-            Finished Book : {wishList.length}
-          </h2>
-          {wishList.map((book) => (
-            <WishList
-              key={book.bookId}
-              allBooksData={book}
-              handleDelete={handleDelete}
-            ></WishList>
-          ))}
-        </TabPanel>
+        {/* Reusable Tab Section */}
+        {[
+          { label: "Read List", data: readBooks, Component: ReadBooks },
+          { label: "Wish List", data: wishList, Component: WishList },
+        ].map(({ label, data, Component }, idx) => (
+          <TabPanel key={idx}>
+            <h2 className="text-xl font-bold text-center my-4">
+              {label} : {data.length}
+            </h2>
+            <div className="flex flex-wrap gap-6 justify-center">
+              {data.map((book) => (
+                <Component
+                  key={book.bookId}
+                  allBooksData={book}
+                  handleDelete={handleDelete}
+                />
+              ))}
+            </div>
+          </TabPanel>
+        ))}
       </Tabs>
     </div>
   );
