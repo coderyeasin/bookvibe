@@ -3,11 +3,11 @@ import { useLoaderData } from "react-router";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { getItem, removeFromLocalStorage } from "../../utils/addReadListToDB";
-import WishList from "../WishList/WishList";
 import {
   getWishList,
   removeWishListFromLocalStorage,
 } from "../../utils/addWishListToDB";
+import WishList from "../WishList/WishList";
 import ReadBooks from "../ReadBooks/ReadBooks";
 
 const ReadLists = () => {
@@ -16,64 +16,60 @@ const ReadLists = () => {
   const [sort, setSort] = useState("");
   const data = useLoaderData();
 
-  useEffect(() => {
-    const getReadListFromDB = getItem();
-    const convertedReadList = getReadListFromDB.map((id) => parseInt(id));
-    const myReadList = data.filter((book) =>
-      convertedReadList.includes(book.bookId)
-    );
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setReadBooks(myReadList);
-
-    //wishList
-    const getWishListFromDB = getWishList();
-    const convertedWishList = getWishListFromDB.map((id) => parseInt(id));
-    const myWishList = data.filter((book) =>
-      convertedWishList.includes(book.bookId)
-    );
-    setWishList(myWishList);
-  }, []);
-
-  const handleBySort = (type) => {
-    setSort(type);
-    if (type === "Pages") {
-      const sortedByPages = [...readBooks].sort(
-        (a, b) => a.totalPages - b.totalPages
-      );
-      setReadBooks(sortedByPages);
-    }
-    if (type === "Rating") {
-      const sortedByRatings = [...readBooks].sort(
-        (a, b) => b.rating - a.rating
-      );
-      setReadBooks(sortedByRatings);
-    }
+  const getFilteredBooks = (storedIds) => {
+    const ids = storedIds.map((id) => parseInt(id));
+    return data.filter((book) => ids.includes(book.bookId));
   };
 
-  const handleDelete = (bookId) => {
-    removeFromLocalStorage(bookId);
-    removeWishListFromLocalStorage(bookId);
-    const updatedReadBooks = readBooks.filter((book) => book.bookId !== bookId);
-    const updatedWishList = wishList.filter((book) => book.bookId !== bookId);
-    setReadBooks(updatedReadBooks);
-    setWishList(updatedWishList);
+  // Sort logic
+  const sortBooks = (books, sortType) => {
+    if (sortType === "Pages") {
+      return [...books].sort((a, b) => b.totalPages - a.totalPages);
+    }
+    if (sortType === "Rating") {
+      return [...books].sort((a, b) => b.rating - a.rating);
+    }
+    return books;
+  };
+
+  useEffect(() => {
+    setReadBooks(getFilteredBooks(getItem()));
+    setWishList(getFilteredBooks(getWishList()));
+  }, [data]);
+
+  // Handle Sort for BOTH lists
+  const handleBySort = (type) => {
+    setSort(type);
+    setReadBooks((prev) => sortBooks(prev, type));
+    setWishList((prev) => sortBooks(prev, type));
+  };
+
+  // Delete Handlers
+  const handleDeleteRead = (id) => {
+    removeFromLocalStorage(id);
+    setReadBooks((prev) => prev.filter((b) => b.bookId !== id));
+  };
+
+  const handleDeleteWish = (id) => {
+    removeWishListFromLocalStorage(id);
+    setWishList((prev) => prev.filter((b) => b.bookId !== id));
   };
 
   return (
     <div>
       <details className="dropdown grid place-items-center my-4">
         <summary className="btn m-1 bg-[#23BE0A] border-none">
-          Sort by : {sort ? sort : ""}
+          Sort by : {sort || "Default"}
         </summary>
         <ul className="menu dropdown-content bg-gray-100 rounded-box z-1 w-52 p-2 shadow-sm">
-          <li>
-            <a onClick={() => handleBySort("Pages")}>Pages</a>
-          </li>
-          <li>
-            <a onClick={() => handleBySort("Rating")}>Ratings</a>
-          </li>
+          {["Pages", "Rating"].map((type) => (
+            <li key={type}>
+              <a onClick={() => handleBySort(type)}>{type}</a>
+            </li>
+          ))}
         </ul>
       </details>
+
       <Tabs>
         <TabList>
           <Tab>Read Book List</Tab>
@@ -81,31 +77,41 @@ const ReadLists = () => {
         </TabList>
 
         <TabPanel>
-          <h2 className="text-xl font-bold text-center">
-            Finished Book : {readBooks.length}
-          </h2>
-          {readBooks.map((book) => (
-            <ReadBooks
-              key={book.bookId}
-              allBooksData={book}
-              handleDelete={handleDelete}
-            ></ReadBooks>
-          ))}
+          <BookListPanel
+            books={readBooks}
+            CardComponent={ReadBooks}
+            onDelete={handleDeleteRead}
+          />
         </TabPanel>
+
         <TabPanel>
-          <h2 className="text-xl font-bold text-center">
-            Finished Book : {wishList.length}
-          </h2>
-          {wishList.map((book) => (
-            <WishList
-              key={book.bookId}
-              allBooksData={book}
-              handleDelete={handleDelete}
-            ></WishList>
-          ))}
+          <BookListPanel
+            books={wishList}
+            CardComponent={WishList}
+            onDelete={handleDeleteWish}
+          />
         </TabPanel>
       </Tabs>
     </div>
+  );
+};
+
+const BookListPanel = ({ books, CardComponent, onDelete }) => {
+  return (
+    <>
+      <h2 className="text-xl font-bold text-center my-4">
+        Books : {books.length}
+      </h2>
+      <div className="flex flex-wrap gap-2 justify-start">
+        {books.map((book) => (
+          <CardComponent
+            key={book.bookId}
+            allBooksData={book}
+            handleDelete={onDelete}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 
