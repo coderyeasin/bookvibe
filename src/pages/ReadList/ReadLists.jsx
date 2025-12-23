@@ -9,6 +9,7 @@ import {
 } from "../../utils/addWishListToDB";
 import WishList from "../WishList/WishList";
 import ReadBooks from "../ReadBooks/ReadBooks";
+import Swal from "sweetalert2";
 
 const ReadLists = () => {
   const [readBooks, setReadBooks] = useState([]);
@@ -46,11 +47,21 @@ const ReadLists = () => {
 
   // Delete Handlers
   const handleDeleteRead = (id) => {
+    Swal.fire({
+      title: "Removed Read Book!",
+      icon: "success",
+      draggable: true,
+    });
     removeFromLocalStorage(id);
     setReadBooks((prev) => prev.filter((b) => b.bookId !== id));
   };
 
   const handleDeleteWish = (id) => {
+    Swal.fire({
+      title: "Removed WishList Book!",
+      icon: "success",
+      draggable: true,
+    });
     removeWishListFromLocalStorage(id);
     setWishList((prev) => prev.filter((b) => b.bookId !== id));
   };

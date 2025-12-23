@@ -3,6 +3,7 @@ import { useLoaderData, useParams } from "react-router";
 import { FaRegStar } from "react-icons/fa";
 import { AddToLocalStorage } from "../../utils/addReadListToDB";
 import { AddWishListToLocalStorage } from "../../utils/addWishListToDB";
+import Swal from "sweetalert2";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -27,11 +28,21 @@ const BookDetails = () => {
     "text-md rounded-[30px] px-3 py-1 font-semibold bg-[#1313130D] text-[#23BE0A]";
   const handleMarkAsRead = () => {
     // Functionality to mark the book as read
+    Swal.fire({
+      title: "Marked as Read!",
+      icon: "success",
+      draggable: true,
+    });
     AddToLocalStorage(bookId);
   };
 
   const handleAddToWishList = () => {
     // Functionality to add the book to the wishlist
+    Swal.fire({
+      title: "Added to WishList!",
+      icon: "success",
+      draggable: true,
+    });
     AddWishListToLocalStorage(bookId);
   };
   return (

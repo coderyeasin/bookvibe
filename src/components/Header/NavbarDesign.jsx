@@ -21,7 +21,7 @@ const NavbarDesign = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/pages" className={getLinkClass}>
+        <NavLink to="/bookDetails" className={getLinkClass}>
           Pages to Read
         </NavLink>
       </li>

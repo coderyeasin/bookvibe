@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 const getItem = () => {
   try {
     const item = localStorage.getItem("readList");
@@ -12,12 +14,17 @@ const AddToLocalStorage = (id) => {
   try {
     const storedItems = getItem();
     if (storedItems.includes(id)) {
-      alert("Item already in the list");
+      // alert("Item already in the list");
+      Swal.fire({
+        title: "Error!",
+        text: "This Book already in the list",
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
       return;
     } else {
       storedItems.push(id);
       localStorage.setItem("readList", JSON.stringify(storedItems));
-      alert("Item added to the list");
     }
   } catch (error) {
     console.error(`Error setting item ${id} in localStorage`, error);
@@ -31,7 +38,6 @@ const removeFromLocalStorage = (id) => {
       (itemId) => String(itemId) !== String(id)
     );
     localStorage.setItem("readList", JSON.stringify(updatedItems));
-    alert("Item removed from the list");
   } catch (error) {
     console.error(`Error removing item ${id} from localStorage`, error);
   }
