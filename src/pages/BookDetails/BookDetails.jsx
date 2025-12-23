@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router";
+import { useLoaderData, useParams } from "react-router";
 import { FaRegStar } from "react-icons/fa";
 import { AddToLocalStorage } from "../../utils/addReadListToDB";
 import { AddWishListToLocalStorage } from "../../utils/addWishListToDB";
@@ -8,9 +8,9 @@ const BookDetails = () => {
   const { id } = useParams();
   const bookId = parseInt(id);
   const data = useLoaderData();
-  const navigate = useNavigate();
 
   const singleBook = data.find((book) => book.bookId === bookId);
+
   const {
     image,
     tags,
@@ -25,16 +25,14 @@ const BookDetails = () => {
   } = singleBook;
   const commonCls =
     "text-md rounded-[30px] px-3 py-1 font-semibold bg-[#1313130D] text-[#23BE0A]";
-  const handleMarkAsRead = (id) => {
+  const handleMarkAsRead = () => {
     // Functionality to mark the book as read
-    AddToLocalStorage(id);
-    navigate("/readlists");
+    AddToLocalStorage(bookId);
   };
 
-  const handleAddToWishList = (id) => {
+  const handleAddToWishList = () => {
     // Functionality to add the book to the wishlist
-    AddWishListToLocalStorage(id);
-    navigate("/readlists");
+    AddWishListToLocalStorage(bookId);
   };
   return (
     <div className="my-7">
@@ -81,13 +79,13 @@ const BookDetails = () => {
           </div>
           <div className="flex-1 flex justify-end items-center gap-4 min-w-0">
             <button
-              onClick={() => handleMarkAsRead(id)}
+              onClick={handleMarkAsRead}
               className="bg-[#23BE0A] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline"
             >
               Mark as Read
             </button>
             <button
-              onClick={() => handleAddToWishList(id)}
+              onClick={handleAddToWishList}
               className="bg-[#59C6D2] text-white rounded-md px-5 py-2 font-medium cursor-pointer no-underline"
             >
               Add To WishList
