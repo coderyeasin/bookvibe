@@ -20,19 +20,19 @@ const NavbarDesign = () => {
           Listed Books
         </NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink to="/bookDetails" className={getLinkClass}>
           Pages to Read
         </NavLink>
-      </li>
+      </li> */}
     </>
   );
 
   return (
     <nav className="w-full flex items-center justify-between m-0 p-0 min-h-[57px] my-[2.5rem] bg-white">
       <div className="flex-1 flex items-center min-w-0">
-        <span className="text-[2rem] font-bold cursor-pointer whitespace-nowrap">
-          Book Vibe
+        <span className="text-[2rem] font-bold cursor-pointer whitespace-nowrap flex gap-3">
+          <img src="/book.ico" alt="logo" /> Book Vibe
         </span>
       </div>
 

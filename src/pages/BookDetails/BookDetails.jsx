@@ -48,9 +48,9 @@ const BookDetails = () => {
   return (
     <div className="my-7">
       <h3 className="text-[2.5rem] font-bold text-center">BookDetails</h3>
-      <div className="flex justify-around items-start rounded-[1rem] border-2 border-gray-100 px-6 py-6">
-        <div className="w-94 rounded-[1rem]">
-          <div className="bg-[#1313130D] rounded-[1rem] ">
+      <div className="flex justify-around items-start rounded-2xl border-2 border-gray-100 px-6 py-6">
+        <div className="w-94 rounded-2xl">
+          <div className="bg-[#1313130D] rounded-2xl ">
             <img
               src={image}
               alt="Books Banner"
