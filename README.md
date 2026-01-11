@@ -1,16 +1,51 @@
-# React + Vite
+# 📚 Book Vibe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Book Vibe** is a simple and user-friendly book management web application built with **ReactJS**.  
+It allows users to explore book details, organize their reading journey, and manage books efficiently using **LocalStorage**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+- 📖 **View Book Details**  
+  See complete information about each book including title, author, rating, and number of pages.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- ✅ **Mark as Read**  
+  Keep track of books you’ve already finished reading.
 
-## Expanding the ESLint configuration
+- ⭐ **Add to Wishlist**  
+  Save books you want to read later.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 📚 **Read & Wishlist Management**
+
+  - View all marked books anytime
+  - Remove books from Read or Wishlist
+  - Prevent duplicate entries
+
+- 🔀 **Sort Books**
+
+  - Sort by **Number of Pages**
+  - Sort by **Rating**
+
+- 💾 **Persistent Data Storage**  
+  Uses **LocalStorage** so your data remains saved even after refreshing the page.
+
+- 🧭 **Client-Side Routing**  
+  Smooth navigation between pages using React Router.
+
+- 🎨 **Modern UI**
+  - Styled with **Tailwind CSS**
+  - Enhanced components using **DaisyUI**
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** ReactJS
+- **Routing:** React Router
+- **Styling:** Tailwind CSS, DaisyUI
+- **Storage:** LocalStorage
+
+---
+
+## Try Out! (https://dispensable-destruction.surge.sh/).
