@@ -47,5 +47,3 @@ It allows users to explore book details, organize their reading journey, and man
 - **Storage:** LocalStorage
 
 ---
-
-## Try Out! (https://dispensable-destruction.surge.sh/).
